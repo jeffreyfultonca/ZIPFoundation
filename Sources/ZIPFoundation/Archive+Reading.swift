@@ -30,6 +30,11 @@ extension Archive {
         var checksum = CRC32(0)
         switch entry.type {
         case .file:
+            // Jeffrey: Remove existing item if present.
+            if fileManager.itemExists(at: url) {
+                try fileManager.removeItem(at: url)
+            }
+            
             guard !fileManager.itemExists(at: url) else {
                 throw CocoaError(.fileWriteFileExists, userInfo: [NSFilePathErrorKey: url.path])
             }
